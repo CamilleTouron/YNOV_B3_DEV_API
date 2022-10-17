@@ -1,0 +1,29 @@
+{
+  "name": "exo4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "author": "Camille",
+  "license": "ISC",
+  "dependencies": {
+    "jest-html-reporter": "^3.7.0",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "jest": "^29.1.2"
+  },
+  "jest": {
+    "testResultsProcessor": "./node_modules/jest-html-reporter",
+    "pageTitle": "Test Report",
+    "outputPath": "./test-report.html"
+  },
+  "jest-html-reporter": {
+    "pageTitle": "Unit Tests",
+    "outputPath": "./test-report.html",
+    "includeFailureMsg": true
+  }
+}
