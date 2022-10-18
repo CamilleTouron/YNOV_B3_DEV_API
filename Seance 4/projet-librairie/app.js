@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
+
 const booksRouter = require('./services/routers/books.router');
 const usersRouter = require('./services/routers/users.router');
 const reviewsRouter = require('./services/routers/reviews.router');

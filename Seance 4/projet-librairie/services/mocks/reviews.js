@@ -19,6 +19,6 @@ const review3 = {
     date: new Date()
 };
 
-let reviews = {review1,review2,review3};
+let reviews = [review1,review2,review3];
 
 exports.reviews = reviews;

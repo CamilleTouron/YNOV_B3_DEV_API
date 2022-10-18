@@ -16,6 +16,6 @@ let user3 = {
     prenom: "Anais"
 };
 
-let users = {user1,user2,user3};
+let users = [user1,user2,user3];
 
 exports.users = users;
