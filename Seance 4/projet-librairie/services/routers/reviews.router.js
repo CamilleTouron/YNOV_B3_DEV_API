@@ -9,7 +9,6 @@ reviewsRouter.get('/review',(req,res)=>{
 });
 function getStatusFromResponce(res){
     const jsonObject= JSON.parse(JSON.stringify(res));
-    console.log(jsonObject);
     return jsonObject.status;
 }
 //GET
@@ -18,6 +17,12 @@ reviewsRouter.get('/reviews',(req,res)=>{
 });
 //ADD
 reviewsRouter.post('/reviews',(req,res)=>{
+    if(!req.body.userId || !req.body.bookId || !req.body.note){
+        res.status(400).json({
+            status : 400,
+            error : "userId, bookId and note are required."
+        });
+    }
     const result = reviews.addReview(req.body.userId,req.body.bookId,req.body.note);
     res.status(getStatusFromResponce(result)).json(result);
 });

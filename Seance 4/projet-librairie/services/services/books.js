@@ -16,6 +16,24 @@ const book3 = {
     date: "2019-11-28"
 };
 
+const book4 = {
+    id: 4,
+    titre: "Harry Potter 2",
+    date: "1997-06-26"
+};
+
+const book5 = {
+    id: 5,
+    titre: "Dune 1",
+    date: "1972-01-01"
+};
+
+const book6 = {
+    id: 6,
+    titre: "La passe mirroire 2",
+    date: "2019-11-28"
+};
+
 let books = [book1, book2, book3];
 
 //GET BY ID
@@ -92,10 +110,7 @@ function isIdOK(id) {
         }
     });
 
-    return {
-        status : 200,
-        content : result
-    }
+    return result;
 }
 function isNomOK(nom) {
     let result = true;
@@ -105,10 +120,7 @@ function isNomOK(nom) {
             return;
         }
     });
-    return {
-        status : 200,
-        content : result
-    }
+    return result;
 }
 function isDateOK(date){
     let result = true;
@@ -120,12 +132,10 @@ function isDateOK(date){
     return result;
 }
 function formatDate(dateReq) {
-    console.log(dateReq*1000);
     var d = new Date(dateReq*1000),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-        console.log(d);
 
     if (month.length < 2) 
         month = '0' + month;
@@ -155,7 +165,6 @@ const deleteBook = function (id) {
     if (result != null) {
         return {
             status : 200,
-            success: true,
             deletedBook: result
         }
     }else{

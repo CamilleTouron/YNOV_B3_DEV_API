@@ -7,10 +7,12 @@ booksRouter.get('/book',(req,res)=>{
         error:"Try http://localhost:3000/librairie/books"
     });
 });
+
 function getStatusFromResponce(res){
     const jsonObject= JSON.parse(JSON.stringify(res));
     return jsonObject.status;
 }
+
 //GET
 booksRouter.get('/books',(req,res)=>{
     res.json(books);
