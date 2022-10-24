@@ -1,17 +1,10 @@
 const express = require('express');
 const rooter = express.Router();
 
-//Middleware de gestion d'erreur :
-rooter.use('/', (error, req, res, next) => {
-    try {
-        //
-    } catch (error) {
-        res.json(error);
-    }
-})
+//Jeter une erreur pour tester le middleware de gestion d'erreur.
 rooter.get('/error', (req, res, next) => {
     console.log('in rooter...')
-    throw 'test';
+    throw new Error('test');
 });
 
 //GET by id

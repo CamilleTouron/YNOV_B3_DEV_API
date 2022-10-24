@@ -18,6 +18,11 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.use('/',rooter);
+app.use('/', rooter);
+
+//Middleware de gestion d'erreur doit être à la fin de la déclaration des routes.
+app.use((err, req, res, next) => {
+    res.status(400).json(err.message);
+});
 
 module.exports=app;
