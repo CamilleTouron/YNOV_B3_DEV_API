@@ -1,10 +1,11 @@
 const express = require('express');
 const rooter = express.Router();
+const createError = require('http-errors')
 
 //Jeter une erreur pour tester le middleware de gestion d'erreur.
 rooter.get('/error', (req, res, next) => {
     console.log('in rooter...')
-    throw new Error('test');
+    throw new createError(400,"Error Message");
 });
 
 //GET by id

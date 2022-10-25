@@ -1,0 +1,399 @@
+openapi: 3.0.3
+info:
+  title: Librairie - OpenAPI 3.0
+  description: |-
+    Simple API de librairie.
+  contact:
+    email: camille.touron.pro@gmail.com
+  version: 1.0.0
+
+servers:
+  - url: https://localhost:3000/
+tags:
+  - name: user
+    description: Adhérent à la librairie.
+  - name: book
+    description: Livre que stock et met à disposition la librairie.
+  - name: review
+    description: Avis sur un livre que fait un adhérent.
+paths:
+  /users:
+    get:
+      tags:
+        - user
+      summary: Lister les adhérents.
+      description: Lister les adhérents de la librairie.
+      operationId: getUsers
+      responses:
+        "200":
+          description: Adhérents trouvés.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Users"
+        "404":
+          description: Adhérent non trouvés.
+    post:
+      tags:
+        - user
+      summary: Ajout adhérent.
+      description: Ajouter un adhérent à la librairie.
+      operationId: addUser
+      requestBody:
+        description: Ajouter un adhérent à la librairie.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/User"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/User"
+        required: true
+      responses:
+        "200":
+          description: Adhérent ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/User"
+        "405":
+          description: Body invalid.
+  /users/{id}:
+    get:
+      tags:
+        - user
+      summary: Retrouver un adhérent par son id.
+      description: Retrouver un adhérent par son id.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: id de l'adhérent
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Adhérent trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Id invalid.
+        "404":
+          description: Adhérent non trouvé.
+    delete:
+      tags:
+        - user
+      summary: Supprimer un adhérent.
+      description: Supprimer un adhérent supprime les avis qu'il a rédiger.
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: Id de l'adhérent.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "400":
+          description: Id invalid.
+        "404":
+          description: User non trouvé avec cet id là.
+  /books:
+    get:
+      tags:
+        - book
+      summary: Lister livres.
+      description: Lister les livres à la librairie.
+      operationId: getBooks
+      responses:
+        "200":
+          description: Livres trouvés.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          description: Livres non trouvés.
+    post:
+      tags:
+        - book
+      summary: Ajout livre.
+      description: Ajouter un livre à la librairie.
+      operationId: addBook
+      requestBody:
+        description: Ajouter un livre à la librairie.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Book"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Book"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Book"
+        required: true
+      responses:
+        "200":
+          description: Livre ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "405":
+          description: Body invalid.
+  /books/{id}:
+    get:
+      tags:
+        - book
+      summary: Retrouver un livre par son id.
+      description: Retrouver un livre par son id.
+      operationId: getBookById
+      parameters:
+        - name: id
+          in: path
+          description: id du livre
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Livre trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Id invalid.
+        "404":
+          description: Livre non trouvé.
+    delete:
+      tags:
+        - book
+      summary: Supprimer un livre.
+      description: Supprimer un livre de la librairie.
+      operationId: deleteBook
+      parameters:
+        - name: id
+          in: path
+          description: Id du livre.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "400":
+          description: Id invalid.
+        "404":
+          description: Livre non trouvé avec cet id là.
+  /reviews:
+    get:
+      tags:
+        - review
+      summary: Lister les avis.
+      description: Lister les avis.
+      operationId: getReviews
+      responses:
+        "200":
+          description: Liste avis trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "405":
+          description: Avis non trouvés.
+    post:
+      tags:
+        - review
+      summary: Ajout avis.
+      description: Ajouter un avis à un livre.
+      operationId: addReview
+      requestBody:
+        description: Ajouter un avis sur un livre de la librairie.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Review"
+          application/xml:
+            schema:
+              $ref: "#/components/schemas/Review"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Review"
+        required: true
+      responses:
+        "200":
+          description: Avis ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "405":
+          description: Body invalid.
+  /reviews/{id}:
+    get:
+      tags:
+        - review
+      summary: Retrouver un avis.
+      description: Retrouver un avis par l'id de son auteur (user).
+      operationId: getReview
+      parameters:
+        - name: id
+          in: path
+          description: id de l'auteur (user)
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: avis trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "400":
+          description: Id invalid.
+        "404":
+          description: avis non trouvé.
+    delete:
+      tags:
+        - review
+      summary: Supprimer un avis.
+      description: Supprimer un avis par l'id de son auteur (user).
+      operationId: deleteReview
+      parameters:
+        - name: id
+          in: path
+          description: Id de l'auteur (user)
+          required: true
+          schema:
+            type: integer
+      responses:
+        "400":
+          description: Id invalid.
+        "404":
+          description: Avis non trouvé avec cet id là.
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        nom:
+          type: string
+          example: "Touron"
+        prenom:
+          type: string
+          example: "Camille"
+      xml:
+        name: User
+    Users:
+      type: array
+      xml:
+        wrapped: true
+      items:
+        $ref: "#/components/schemas/User"
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        nom:
+          type: string
+          example: "Harry Potter"
+        date:
+          type: string
+          format: date-type
+          example: "2022-10-20"
+      xml:
+        name: Book
+    Books:
+      type: array
+      xml:
+        wrapped: true
+      items:
+        $ref: "#/components/schemas/Book"
+    Review:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 3
+        bookId:
+          type: integer
+          example: 7
+        note:
+          type: integer
+          description: "Note sur 10."
+          example: 10
+      xml:
+        name: Review
+    Reviews:
+      type: array
+      xml:
+        wrapped: true
+      items:
+        $ref: "#/components/schemas/Review"
+    ApiResponse:
+      type: object
+      properties:
+        content:
+          type: string
+        message:
+          type: string
+      xml:
+        name: "##default"
+  requestBodies:
+    User:
+      description: Adhérent à ajouter à la librairie.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/User"
+    Book:
+      description: Livre à ajouter à la librairie.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Book"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/Book"
+    Review:
+      description: Avis à ajouter à la librairie.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Review"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/Review"
