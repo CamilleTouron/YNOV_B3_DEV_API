@@ -4,6 +4,9 @@ const reviewsRouter = require('./services/routers/reviews.router');
 const OpenApiValidator = require('express-openapi-validator');
 const express = require('express');
 const app = express();
+const sequelize = require('./db.js');
+
+sequelize.start();
 
 app.use(express.json());
 app.use(
