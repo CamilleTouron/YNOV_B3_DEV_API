@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "jest-html-reporter": "^3.7.0",
     "maven": "^5.0.0",
