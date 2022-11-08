@@ -1,3 +1,4 @@
+CREATE DATABASE ynovlibrairie;
 CREATE USER IF NOT EXISTS 'camille'@'localhost' IDENTIFIED WITH mysql_native_password BY 'camille';
 GRANT ALL ON ynovlibrairie.* TO 'camille'@'localhost';
 FLUSH PRIVILEGES;
