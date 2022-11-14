@@ -1,13 +1,17 @@
-const books = [
-    {"id": 1, "title": "Le seigneur des anneaux", "date": "10/10/2022"},
+const books = require('../models/books')
+const Sequelize =require('sequelize');
+/*const books = [
+    {id: 1, title: "Le seigneur des anneaux", date: "10/10/2022"},
     {id: 2, title: "Harry Potter", date: "11/10/2022"},
     {id: 3, title: "Le petit chaperon rouge", date: "15/10/2022"}
-];
+];*/
 
-exports.getBooks = () => {
-    return books;
+exports.getBooks = getBooks;
+async function getBooks(){
+    const book=books.findAll();
+    console.log( book.every(book => book instanceof books)) ;
+    return null;
 }
-
 exports.getBookById = (id) => {
     id = parseInt(id);
     return books.find(o => o.id === id);

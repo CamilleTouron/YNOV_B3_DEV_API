@@ -2,8 +2,8 @@ const booksService = require('../services/books');
 const reviewsService = require("../services/reviews");
 const createError = require('http-errors');
 
-exports.getBooks = (req, res) => {
-   const books = booksService.getBooks();
+exports.getBooks = async (req, res) => {
+   const books = await booksService.getBooks();
    res.json({success: true, data: books});
 }
 
