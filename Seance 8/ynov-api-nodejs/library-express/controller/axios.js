@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+var cache = require('memory-cache');
 
 exports.getMeteo = (req, res, next) => {
    
@@ -7,7 +7,8 @@ exports.getMeteo = (req, res, next) => {
         .then(function (response) {
             console.log(response);
             setClientCache(req, res, next);
-            console.log("end of get meteo");
+            setServerCache(req,res,next);
+            getServerCache(req,res,next);
             res.json({ success: true, res: response.data });
         })
         .catch(function (error) {
@@ -20,7 +21,18 @@ exports.getMeteo = (req, res, next) => {
 }
 
 function setClientCache(req, res, next) {
-    console.log("set client cache");
     res.setHeader('TEST', 'CAMILLE');
+    next();
+}
+
+function setServerCache(req, res, next) {
+    console.log("set server cache");
+    cache.put("test","camille",1000);
+    next();
+}
+function getServerCache(req, res, next) {
+    console.log("get server cache");
+    var cacheTest = cache.get("test");
+    console.log(cacheTest);
     next();
 }
