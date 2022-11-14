@@ -23,6 +23,128 @@ tags:
   - name: reviews
     description: Everything about Reviews
 paths:
+  /users/login:
+    post:
+      tags:
+        - login
+      summary: login
+      description: login
+      operationId: login
+      requestBody:
+          $ref: "#/components/requestBodies/Login"
+          responses:
+            "201":
+              $ref: "#/components/responses/ResourceCreated"
+            "400":
+              $ref: "#/components/responses/InvalidBody"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      responses:
+        "400":
+          description: Login failed.
+        "404":
+          description: User non trouvé avec cet id là.
+  /users:
+    get:
+      tags:
+        - user
+      summary: Lister les adhérents.
+      description: Lister les adhérents de la librairie.
+      operationId: getUsers
+      responses:
+        "200":
+          description: Adhérents trouvés.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Users"
+        "404":
+          description: Adhérent non trouvés.
+    post:
+      tags:
+        - user
+      summary: Ajout adhérent.
+      description: Ajouter un adhérent à la librairie.
+      operationId: addUser
+      requestBody:
+          $ref: "#/components/requestBodies/UserCreation"
+          responses:
+            "201":
+              $ref: "#/components/responses/ResourceCreated"
+            "400":
+              $ref: "#/components/responses/InvalidBody"
+            "500":
+              $ref: "#/components/responses/InternalServerError"
+      responses:
+        "200":
+          description: Adhérent ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/User"
+        "405":
+          description: Body invalid.
+  /users/{id}:
+    get:
+      tags:
+        - user
+      summary: Retrouver un adhérent par son id.
+      description: Retrouver un adhérent par son id.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: id de l'adhérent
+          required: true
+          schema:
+            type: integer
+        - name: auth
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Adhérent trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Id invalid.
+        "404":
+          description: Adhérent non trouvé.
+    delete:
+      tags:
+        - user
+      summary: Supprimer un adhérent.
+      description: Supprimer un adhérent supprime les avis qu'il a rédiger.
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: Id de l'adhérent.
+          required: true
+          schema:
+            type: integer
+        - name: auth
+          in: header
+          description: token
+          required: true
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Id invalid.
+        "404":
+          description: User non trouvé avec cet id là.
   /axios:
     get:
       tags:
@@ -116,6 +238,43 @@ components:
       schema:
         type: integer
   schemas:
+    UserNew:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 10
+            firstname:
+              type: string
+              example: "Touron"
+            lastname:
+              type: string
+              example: "Camille"
+            isAdmin:
+              type: boolean
+              example: "false"
+            password:
+              type: string
+              example: "etvhtrdvtyesvy"
+          xml:
+            name: User
+    User:
+        type: object
+        properties:
+          firstname:
+            type: string
+            example: "Touron"
+          lastname:
+            type: string
+            example: "Camille"
+        xml:
+          name: User
+    Users:
+      type: array
+      xml:
+        wrapped: true
+      items:
+        $ref: "#/components/schemas/User"
     BookList:
       type: object
       properties:
@@ -140,7 +299,25 @@ components:
           type: string
           format: date
           example: "2022-10-25"
+    Login:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        password:
+          type: string
+          example: "etvhtrdvtyesvy"
+      xml:
+        name: login
   requestBodies:
+    Login:
+      required: true
+      description: login
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
     BookCreation:
       required: true
       description: Book object that needs to be created
@@ -148,6 +325,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Book'
+    UserCreation:
+      required: true
+      description: Book object that needs to be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserNew'
   responses:
     ResourceCreated:
       description: "The resource has been created"

@@ -1,26 +1,26 @@
 const reviewsService = require('./reviews');
+const passwordService = require('./password');
 
-const users = [
-    {id: 1, firstName: "Jean", lastName: "Dupont"},
-    {id: 2, firstName: "Michel", lastName: "Blanc"},
-    {id: 3, firstName: "Pierre", lastName: "Marie"},
-];
+const db = require('../models');
 
 exports.getUsers = async () => {
-    return users;
+    return await db.users.findAll();
 }
 
-exports.getUserById = (id) => {
-    id = parseInt(id);
-    return users.find(o => o.id === id);
+exports.getUserById = async  (id) => {
+    return await db.users.findAll({
+        where: {
+            id
+        }
+    });
 }
 
-exports.addUser = (id, firstName, lastName) => {
-    if (id != null && firstName != null && lastName != null) {
+exports.addUser = (id, firstName, lastName, isAdmin, password) => {
+    if (id!=null && firstName!=null && lastName!=null && password!=null && isAdmin!=null) {
         const userById = module.exports.getUserById(id);
-        if (!userById) {
-            users.push({id, firstName, lastName});
-            //return true;
+        if (userById!=null) {
+            const passwordEncoded=passwordService.crypt(password);
+            return db.users.create({id, firstName, lastName , passwordEncoded, isAdmin});
         } else {
             throw new Error('A user with this id already exists');
         }
@@ -30,13 +30,11 @@ exports.addUser = (id, firstName, lastName) => {
 }
 
 exports.deleteUserById = function deleteUserBy(id) {
-    id = parseInt(id);
-    const userIndex = users.findIndex(o => o.id === id);
-    if (userIndex > -1) {
-        reviewsService.deleteReviewsForUser(id);
-        users.splice(userIndex, 1);
-        return true;
-    } else {
-        throw new Error('Book not found');
-    }
+    return db.users.destroy({
+        where: {
+            id
+        }
+    });
 }
+
+

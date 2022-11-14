@@ -9,6 +9,7 @@ exports.getMeteo = (req, res, next) => {
             setClientCache(req, res, next);
             setServerCache(req,res,next);
             getServerCache(req,res,next);
+            res.set('Cache-Control','public, max-age=30');//Pour mettre tout le contenu de la reponse en cache navigateur
             res.json({ success: true, res: response.data });
         })
         .catch(function (error) {

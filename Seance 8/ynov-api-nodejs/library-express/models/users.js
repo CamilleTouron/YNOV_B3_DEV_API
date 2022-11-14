@@ -13,6 +13,15 @@ module.exports = (instance) => {
         },
         lastName: {
             type: DataTypes.STRING,
+        },
+        password: {
+            type: DataTypes.STRING,
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+        },
+        token: {
+            type: DataTypes.STRING,
         }
     }, {
         timestamps: false

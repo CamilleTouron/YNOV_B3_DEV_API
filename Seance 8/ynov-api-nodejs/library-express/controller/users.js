@@ -1,17 +1,14 @@
-const express = require('express'),
-      router = express.Router();
-
 const usersService = require('../services/users');
+const loggingService = require('../services/login');
 
-router.get('/', async (req, res) => {
+exports.getUsers = async (req, res) => {
    const users = await usersService.getUsers();
    res.json({success: true, data: users});
-});
+}
 
-router.get('/:id', (req, res) => {
+exports.getUserById = async (req, res, next) => {
    try {
       const userId = parseInt(req.params.id);
-      //usersService.getUserById("ab");
       const user = usersService.getUserById(userId);
       if (user) {
          res.json({success: true, data: user});
@@ -21,12 +18,12 @@ router.get('/:id', (req, res) => {
    } catch (e) {
       res.status(400).json({success: false, message: 'id parameter must be a valid number'});
    }
-});
+}
 
-router.post('/', (req, res) => {
-   if (req.body && req.body.id && req.body.firstName && req.body.lastName) {
+exports.addUser = async (req, res, next) => {
+   if (req.body!=null && req.body.id!=null && req.body.firstname!=null && req.body.lastname!=null && req.body.isAdmin!=null && req.body.password!=null) {
       try {
-         usersService.addUser(req.body.id, req.body.firstName, req.body.lastName);
+         usersService.addUser(req.body.id, req.body.firstname, req.body.lastname, req.body.isAdmin,req.body.password);
          res.status(201).json({success: true, message: `User has been added`});
       } catch (e) {
          res.status(400).json({success: false, message: 'User has not been added', error: e.message});
@@ -34,9 +31,9 @@ router.post('/', (req, res) => {
    } else {
       res.status(400).json({success: false, message: 'Cannot add this user, make sure all args has been sent'});
    }
-});
+}
 
-router.delete('/:userId', (req, res) => {
+exports.deleteUserById = async (req, res, next) => {
    if (req.params.userId) {
       const user = usersService.getUserById(req.params.userId);
       if (user) {
@@ -48,6 +45,16 @@ router.delete('/:userId', (req, res) => {
    } else {
       res.status(400).json({success: false, message: 'The userId is required'});
    }
-});
-
-module.exports = router;
+}
+exports.login = async (req, res, next) => {
+   if (req.body!=null && req.body.id!=null && req.body.password!=null) {
+      try {
+         const token = loggingService.loggin(req.body.id,req.body.password);
+         res.status(200).json({success: true, token: token});
+      } catch (e) {
+         res.status(400).json({success: false, message: 'Cannot login', error: e.message});
+      }
+   } else {
+      res.status(400).json({success: false, message: 'Cannot login, make sure all args has been sent'});
+   }
+}

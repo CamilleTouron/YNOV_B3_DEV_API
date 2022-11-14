@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const OpenApiValidator = require('express-openapi-validator');
 const booksRouter = require('./routers/books');
+const usersRouter = require('./routers/users');
 const axiosRouter = require('./routers/axios');
 
 app.use(cors());
@@ -14,6 +15,7 @@ app.use(
 );
 
 app.use('/books', booksRouter);
+app.use('/users', usersRouter);
 app.use('/axios', axiosRouter);
 
 app.use((error, req, res, next) => {
